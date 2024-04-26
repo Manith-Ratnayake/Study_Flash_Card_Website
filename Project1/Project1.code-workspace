@@ -1,0 +1,22 @@
+{
+    "folders": [
+        {
+            "name": "choreo-project-root",
+            "path": "."
+        },
+        {
+            "name": "web-portal",
+            "path": "repos\\Manith-Ratnayake\\Quiz"
+        },
+        {
+            "name": "weatherwebapp",
+            "path": "repos\\Manith-Ratnayake\\Manith-Ratnayake"
+        }
+    ],
+    "metadata": {
+        "choreo": {
+            "projectID": "84913417-2009-4255-86f4-45d25485667b",
+            "orgId": "36464"
+        }
+    }
+}

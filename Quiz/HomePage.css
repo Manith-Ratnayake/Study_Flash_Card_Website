@@ -1,0 +1,53 @@
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+body {
+    background-color: darkblue; 
+    color: white; /* Set text color */
+}
+
+
+nav {
+    background-color: #333; /* Set background color */
+}
+
+/* Resetting default margin and padding for the list */
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+/* Styling the navigation links */
+nav ul li {
+    display: inline;
+    margin-right: 20px; /* Add some space between each link */
+}
+
+nav ul li a {
+    text-decoration: none; /* Remove underlines from links */
+    color: white; /* Set text color */
+    font-weight: bold; /* Make text bold */
+}
+
+nav ul li a:hover {
+    color: blue; /* Change text color on hover */
+}
+
+
+/* Footer styling */
+footer {
+    background-color: #333; /* Set background color */
+    color: white; /* Set text color */
+    text-align: center; /* Center-align text */
+    padding: 20px 0; /* Add some padding */
+    position: fixed; /* Stick the footer to the bottom of the viewport */
+    width: 100%; /* Make the footer span the entire width */
+    bottom: 0; /* Align footer to the bottom */
+}
