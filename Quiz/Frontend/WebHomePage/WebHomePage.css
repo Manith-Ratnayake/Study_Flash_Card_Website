@@ -7,9 +7,11 @@ h1 {
 }
 
 body {
-    background-color: #2234ae;
-    background-image: linear-gradient(315deg, #2234ae 0%, #191714 74%);
 
+    
+    background: linear-gradient(45deg, #62cff4, #2c67f2);
+    
+    
     color: white; /* Optional: Sets text color to white for good contrast */
   }
 

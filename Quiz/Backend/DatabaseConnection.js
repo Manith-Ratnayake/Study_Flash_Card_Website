@@ -79,30 +79,33 @@ app.post('/api/signup', async (req, res) => {
 
 
 // // DatabaseConnection.js
-app.post('/api/getAllUserSubjects', (req, res) => {
+app.post('/api/getAllUserSubjects', async (req, res) => {
   const userEmail = req.body.email;
   console.log("Received request for user email:", userEmail);
 
   try {
       // Example response if fetching from a database
-      pool.query('SELECT Subject FROM User_subject WHERE Email = ?', [userEmail], (error, results) => {
-          if (error) {
-              console.error('Error executing SQL query:', error);
-              return res.status(500).json({ error: 'An error occurred while fetching user subjects' });
-          }
+      const [results] = await pool.query('SELECT Subject FROM User_subject WHERE Email = ?', [userEmail]);
+      console.log("Query Results: ", results);
 
-          const subjects = results.map(result => result.subject);
-          console.log("Subject: ", subjects);
-          res.json({ subjects });
-      });
+
+      if (!results || results.length === 0) {
+          console.log("No subjects found for user:", userEmail);
+          return res.status(404).json({ message: 'No subjects found for the user' });
+      }
+
+      const subjects = await Promise.all(results.map(async (result) => {
+        return result.Subject;
+    }));
+    
+
+      console.log("Subject: ", subjects);
+      res.json({ subjects });
   } catch (error) {
-      console.error('Error in database query:', error);
+      console.error('Error executing SQL query:', error);
       return res.status(500).json({ error: 'An error occurred while fetching user subjects' });
   }
 });
-
-  
-
 
 
 

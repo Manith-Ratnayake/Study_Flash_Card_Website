@@ -38,6 +38,18 @@
 // UserPage.js
 document.addEventListener('DOMContentLoaded', function() {
     const output = document.getElementById('errorOutput'); // Make sure you have a div with this ID in your HTML
+    const buttonContainer = document.getElementById('buttonContainer'); // Container where buttons will be appended
+
+    // Function to display subjects as buttons
+    function displaySubjects(subjects) {
+        buttonContainer.innerHTML = ''; // Clear previous buttons (if any)
+
+        subjects.forEach(subject => {
+            const button = document.createElement('button');
+            button.textContent = subject;
+            buttonContainer.appendChild(button);
+        });
+    }
 
     // Retrieve the stored email from localStorage
     const storedEmail = localStorage.getItem('userEmail');
@@ -63,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             console.log('API Response:', data);
-            displaySubjects(data);
+            displaySubjects(data.subjects);
         })
         .catch(error => {
             console.error('Error during fetch:', error.message);
@@ -79,8 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
-
-
 
 
 
