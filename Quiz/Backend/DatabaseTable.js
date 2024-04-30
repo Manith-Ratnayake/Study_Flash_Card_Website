@@ -1,89 +1,95 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('./database');  // Ensure this imports your configured Sequelize instance
+const { Sequelize, DataTypes } = require('sequelize');
 
-const User = sequelize.define('User', {
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-    validate: {
-      isEmail: true
+// Assuming `sequelize` is your configured Sequelize instance
+const sequelize = require('./database');
+
+// Define the User_Detail model
+const User_Detail = sequelize.define('User_Detail', {
+    Email: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        primaryKey: true,
+        validate: {
+            isEmail: true
+        }
+    },
+    Password: {
+        type: DataTypes.STRING(50),
+        allowNull: false
     }
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false
-  }
 }, {
-  tableName: 'users'
+    tableName: 'User_Detail'
 });
-const Subject = sequelize.define('Subject', {
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: User,
-        key: 'email'
-      }
+
+// Define the User_Subject model
+const User_Subject = sequelize.define('User_Subject', {
+    Email: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        references: {
+            model: 'User_Detail', // This is the table name of the model
+            key: 'Email'
+        }
     },
-    subject: {
-      type: DataTypes.STRING,
-      allowNull: false
+    Subject: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        primaryKey: true
     }
-  }, {
-    tableName: 'subjects'
-  });
-  const Question = sequelize.define('Question', {
-    email: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: User,
-        key: 'email'
-      }
+}, {
+    tableName: 'User_Subject'
+});
+
+// Define the User_Subject_Question model
+const User_Subject_Question = sequelize.define('User_Subject_Question', {
+    Email: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        references: {
+            model: 'User_Subject',
+            key: 'Email'
+        }
     },
-    subject: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: Subject,
-        key: 'subject'
-      }
+    Subject: {
+        type: DataTypes.STRING(50),
+        allowNull: false,
+        references: {
+            model: 'User_Subject',
+            key: 'Subject'
+        }
     },
-    question: {
-      type: DataTypes.STRING,
-      allowNull: false
+    Question_No: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        primaryKey: true
     },
-    answer: {
-      type: DataTypes.STRING,
-      allowNull: true  // assuming answers may be null initially
+    Question: {
+        type: DataTypes.STRING(500),
+        allowNull: false
+    },
+    Answer: {
+        type: DataTypes.STRING(1000)
     }
-  }, {
-    tableName: 'questions'
-  });
-// Users have many Subjects
-User.hasMany(Subject, { foreignKey: 'email' });
-Subject.belongsTo(User, { foreignKey: 'email' });
+}, {
+    tableName: 'User_Subject_Question'
+});
 
-// Subjects have many Questions
-Subject.hasMany(Question, { foreignKey: 'subject' });
-Question.belongsTo(Subject, { foreignKey: 'subject' });
+// Define relationships
+User_Detail.hasMany(User_Subject, { foreignKey: 'Email', onDelete: 'CASCADE' });
+User_Subject.belongsTo(User_Detail, { foreignKey: 'Email' });
 
-// Users have many Questions through Subjects
-User.hasMany(Question, { foreignKey: 'email' });
-Question.belongsTo(User, { foreignKey: 'email' });
+User_Subject.hasMany(User_Subject_Question, { foreignKey: ['Email', 'Subject'], onDelete: 'CASCADE' });
+User_Subject_Question.belongsTo(User_Subject, { foreignKey: ['Email', 'Subject'] });
 
-
+// Synchronize all defined models to the DB
 sequelize.sync({ force: true })  // Warning: `force: true` will drop existing tables!
-  .then(() => {
-    console.log('Database & tables created!');
-  });
-    
+    .then(() => {
+        console.log('Database & tables created!');
+    });
 
-// Export all models
+// Export models
 module.exports = {
-    sequelize, // Optionally export the sequelize instance
-    User,
-    Subject,
-    Question
-  };
+  User_Subject,
+  User_Subject_Question,
+  User_Detail
+};

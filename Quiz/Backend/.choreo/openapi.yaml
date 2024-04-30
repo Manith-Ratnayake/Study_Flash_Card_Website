@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: Login API
+  description: API for user authentication and login.
+  version: "1.0"
+paths:
+  /api/login:
+    post:
+      summary: User login
+      description: |
+        Endpoint for user authentication and login.
+        Verifies user credentials and returns a success message upon successful login.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                password:
+                  type: string
+                  description: User's password
+              required:
+                - email
+                - password
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating successful login
+                  email:
+                    type: string
+                    format: email
+                    description: The email address of the logged-in user
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating that the user was not found
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating that the provided credentials are invalid
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating a server error occurred
+  /api/signup:
+    post:
+      summary: User signup
+      description: |
+        Endpoint for user registration and signup.
+        Registers a new user with the provided email and password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                password:
+                  type: string
+                  description: User's password
+              required:
+                - email
+                - password
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating successful user creation
+                  user:
+                    type: object
+                    properties:
+                      email:
+                        type: string
+                        format: email
+                        description: The email address of the newly created user
+        '409':
+          description: Email already in use
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating that the provided email is already in use
+        '500':
+          description: Server error during signup
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: A message indicating a server error occurred during user signup
+  

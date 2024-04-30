@@ -1,65 +1,96 @@
+const mysql = require('mysql2');
 const express = require('express');
-const mysql = require('mysql');
+const bcrypt = require('bcryptjs');
+const cors = require('cors');
 
+require('dotenv').config();
+
+// Initialize Express app
 const app = express();
-const port = 3000;
+const port = 13662; // Make sure this port is not in conflict
+
+// Enable CORS for all routes (be more specific in production)
+app.use(cors());
+
+// mysql2 pool configuration using environment variables
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  port:13662,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  connectTimeout: 30000  // Adjusted to 30 seconds
+}).promise();
 
 
-const { User, Subject, Question } = require('DatabaseTable.js');
+app.use(express.static('public'));
 app.use(express.json());
 
 
 
 
 
-// Create MySQL connection
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,     
-  user: process.env.DB_USER,      
-  password: process.env.DB_PASSWORD, 
-  database: process.env.DB_NAME 
-});
 
-
-
-console.log("The Process worked!!!")
-
-
-
-
-
-// Connect to MySQL
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL database:', err);
-    return;
-  }
-  console.log('Connected to MySQL database');
-});
-
-
-
-
-
-
-app.post('/saveData', async (req, res) => {
+// Example API: Sign In
+app.post('/api/signin', async (req, res) => {
+  const { email, password } = req.body;
   try {
-      const user = await User.create(req.body);
-      res.status(200).json({ success: true, user });
-  } catch (err) {
-      console.error('Error saving data:', err);
-      res.status(500).json({ error: 'Failed to save data' });
+    const [users] = await pool.query('SELECT * FROM User_Detail WHERE Email = ?', [email]);
+    const user = users[0];
+    if (!user) {
+      return res.status(404).send({ message: 'User not found' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.Password);
+    if (!isMatch) {
+      return res.status(401).send({ message: 'Invalid credentials' });
+    }
+
+    res.send({ message: 'Login successful', email: user.Email });
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).send({ message: 'Server error' });
   }
 });
 
 
 
 
+// Example API: Signup
+app.post('/api/signup', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const [existing] = await pool.query('SELECT * FROM User_Detail WHERE Email = ?', [email]);
+    if (existing.length > 0) {
+      return res.status(409).send({ message: 'Email already in use' });
+    }
 
-
-
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await pool.query('INSERT INTO User_Detail (Email, Password) VALUES (?, ?)', [email, hashedPassword]);
+    res.status(201).send({ message: 'User created', user: { email: email } });
+  } catch (error) {
+    console.error('Signup error:', error);
+    res.status(500).send({ message: 'Server error during signup' });
+  }
 });
+
+
+
+function startServer(port) {
+  app.listen(port, () => {
+    console.log(`Server listening on http://localhost:${port}`);
+  }).on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.log(`Port ${port} is already in use, trying port ${port + 1}`);
+      startServer(port + 1);
+    } else {
+      console.error(err);
+    }
+  });
+}
+
+startServer(port);
+
+

@@ -9,12 +9,8 @@
 <body>
 
     
-    
 
-   
-
-
-    <div class="SignInFormContainer">
+     <div class="SignInFormContainer">
 
 
         <div class="SignInText">
@@ -23,20 +19,23 @@
         
         
         <div class="SignInDetails">
-    
-            <form action="UserAuthentication/submit_signin" method="post">
+
+            <form id="signInForm" action="../UserPage/UserPage.html" method="post">
+            
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="text" id="email" name="email" required>
                 </div>
+            
                 <div class="form-group">
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" required>
                 </div>
+                <button type="button" class="SignInSubmitButton">Sign In</button>
+            
             </form>
-            <button class="SignInSubmitButton" onclick="UserHomePageLoad()">Sign In</button>
-
         </div>
+        
     
     
     </div>
@@ -47,7 +46,7 @@
     </div>
     
 
-    <script src="Sign.js"></script>
+    <script src="SignIn.js"></script>
     
 
 

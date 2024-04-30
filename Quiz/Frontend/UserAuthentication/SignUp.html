@@ -19,7 +19,8 @@
         
         <div class="SignInDetails">
     
-            <form action="UserAuthentication/submit_signin" method="post">
+            <form id="signUpForm" action="../UserPage/UserPage.html" method="post">
+
                 <div class="form-group">
                     <label for="email">Email</label>
                     <input type="text" id="email" name="email" required>
@@ -28,22 +29,22 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-            </form>
-            <button class="SignInSubmitButton"  onclick="UserHomePageLoad()">Sign Up</button>
 
+                <button class="SignUpSubmitButton">Sign Up</button>
+
+
+            </form>
             
         </div>
         
-    
     </div>
     
-   
 
     <div class="SignUpInstead">
         <a href="SignIn.html">Already have an Account? Join from here</a>
     </div>
 
-    <script src="Sign.js"></script>
+    <script src="SignUp.js"></script>
 
 
 </body>
