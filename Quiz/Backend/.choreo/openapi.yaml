@@ -89,3 +89,47 @@ paths:
           description: No subjects found for the user
         '500':
           description: Server error while fetching subjects
+components:
+  schemas:
+    UserDetail:
+      type: object
+      properties:
+        Email:
+          type: string
+          format: email
+        Password:
+          type: string
+      required:
+        - Email
+        - Password
+    UserSubject:
+      type: object
+      properties:
+        Email:
+          type: string
+          format: email
+        Subject:
+          type: string
+      required:
+        - Email
+        - Subject
+    UserSubjectQuestion:
+      type: object
+      properties:
+        Email:
+          type: string
+          format: email
+        Subject:
+          type: string
+        Question_No:
+          type: integer
+          format: int32
+        Question:
+          type: string
+        Answer:
+          type: string
+      required:
+        - Email
+        - Subject
+        - Question_No
+        - Question
