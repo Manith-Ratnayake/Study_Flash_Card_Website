@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
-  title: Login API
-  description: API for user authentication including login and signup functionalities.
+  title: Comprehensive User Management API
+  description: This API handles user authentication and manages user-specific subject information.
   version: "1.0"
 servers:
   - url: 'http://localhost:13662'
@@ -15,19 +15,17 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-              required:
-                - email
-                - password
+              $ref: '#/components/schemas/UserDetail'
       responses:
         '200':
           description: Login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         '401':
           description: Invalid credentials
         '404':
@@ -44,19 +42,17 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                password:
-                  type: string
-              required:
-                - email
-                - password
+              $ref: '#/components/schemas/UserDetail'
       responses:
         '201':
           description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
         '409':
           description: Email already in use
         '500':
@@ -71,11 +67,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
+              $ref: '#/components/schemas/UserSubject'
       responses:
         '200':
           description: Successfully retrieved subjects
@@ -89,6 +81,7 @@ paths:
           description: No subjects found for the user
         '500':
           description: Server error while fetching subjects
+
 components:
   schemas:
     UserDetail:
@@ -133,3 +126,4 @@ components:
         - Subject
         - Question_No
         - Question
+ 
