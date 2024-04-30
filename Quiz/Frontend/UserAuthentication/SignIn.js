@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const signUpButton = document.querySelector('.SignUpSubmitButton');
-    signUpButton.addEventListener('click', function(event) {
+
+    const SignInSubmitButton = document.querySelector('.SignInSubmitButton');
+    SignInSubmitButton.addEventListener('click', function(event) {
         event.preventDefault();
-        const form = document.getElementById('signUpForm');
+        const form = document.getElementById('signInForm');
         const email = form.elements['email'].value;
         const password = form.elements['password'].value;
 
@@ -25,6 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.message) {
                 console.log('Success:', data.message);
+                localStorage.setItem('userEmail', email);
+                window.location.href = '../UserPage/UserPage.html'; 
+
             }
         })
         .catch(error => {

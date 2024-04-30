@@ -25,6 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.message) {
                 console.log('Success:', data.message);
+                localStorage.setItem('userEmail', email);
+                window.location.href = '../UserPage/UserPage.html'; 
+
             }
         })
         .catch(error => {

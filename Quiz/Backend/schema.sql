@@ -24,3 +24,49 @@ CREATE TABLE User_subject_question (
 
 
 
+
+
+INSERT INTO User_Detail (Email, Password)
+VALUES
+('user1@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user2@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user3@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user4@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user5@example.com', FLOOR(10000 + RAND() * 90000)),
+('user6@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user7@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user8@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user9@example.com', FLOOR(10000 + RAND() * 90000)), 
+('user10@example.com', FLOOR(10000 + RAND() * 90000)); 
+
+
+
+
+
+
+
+INSERT INTO user_subject (email, subject)
+VALUES
+('user1@example.com', 'Mathematics'),
+('user2@example.com', 'Science'),
+('user3@example.com', 'History'),
+('user4@example.com', 'English'),
+('user5@example.com', 'Geography'),
+('user6@example.com', 'Physics'),
+('user7@example.com', 'Literature'),
+('user8@example.com', 'Chemistry'),
+('manith', 'Biology'),
+('manith', 'Mathematics'),
+('manith', 'Science'),
+('manith', 'Art'),
+('manith', 'English'),
+('manith', 'History'),
+('manith', 'Geography'),
+('manith', 'Literature'),
+('manith', 'Physics'),
+('manith', 'Chemistry');
+
+
+select * from User_subject;
+select * from User_Detail;
+

@@ -16,7 +16,7 @@ app.use(cors());
 const pool = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
-  port:13662,
+  port: process.env.DB_PORT,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   waitForConnections: true,
@@ -25,10 +25,8 @@ const pool = mysql.createPool({
 }).promise();
 
 
-app.use(express.static('public'));
+app.use(express.static('../Frontend'));
 app.use(express.json());
-
-
 
 
 
@@ -75,6 +73,41 @@ app.post('/api/signup', async (req, res) => {
     res.status(500).send({ message: 'Server error during signup' });
   }
 });
+
+
+
+
+
+// // DatabaseConnection.js
+app.post('/api/getAllUserSubjects', (req, res) => {
+  const userEmail = req.body.email;
+  console.log("Received request for user email:", userEmail);
+
+  try {
+      // Example response if fetching from a database
+      pool.query('SELECT Subject FROM User_subject WHERE Email = ?', [userEmail], (error, results) => {
+          if (error) {
+              console.error('Error executing SQL query:', error);
+              return res.status(500).json({ error: 'An error occurred while fetching user subjects' });
+          }
+
+          const subjects = results.map(result => result.subject);
+          console.log("Subject: ", subjects);
+          res.json({ subjects });
+      });
+  } catch (error) {
+      console.error('Error in database query:', error);
+      return res.status(500).json({ error: 'An error occurred while fetching user subjects' });
+  }
+});
+
+  
+
+
+
+
+
+
 
 
 
